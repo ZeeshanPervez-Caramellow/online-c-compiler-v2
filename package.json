@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/ZeeshanPervez-Caramellow/online-c-compiler-v2/issues"
   },
-  "homepage": "https://github.com/ZeeshanPervez-Caramellow/online-c-compiler-v2#readme"
+  "homepage": "https://github.com/ZeeshanPervez-Caramellow/online-c-compiler-v2#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
