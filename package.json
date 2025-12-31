@@ -1,0 +1,28 @@
+{
+  "name": "online-c-compiler",
+  "version": "1.0.0",
+  "description": "an online code compiler for c programming",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZeeshanPervez-Caramellow/online-c-compiler-v2.git"
+  },
+  "keywords": [
+    "compiler",
+    "node",
+    "docker",
+    "c-programming",
+    "supabase",
+    "postgreSQL",
+    "sandbox"
+  ],
+  "author": "Zeeshan Pervez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZeeshanPervez-Caramellow/online-c-compiler-v2/issues"
+  },
+  "homepage": "https://github.com/ZeeshanPervez-Caramellow/online-c-compiler-v2#readme"
+}
