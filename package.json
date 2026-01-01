@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/ZeeshanPervez-Caramellow/online-c-compiler-v2#readme",
   "dependencies": {
+    "@supabase/supabase-js": "^2.89.0",
     "express": "^5.2.1"
   }
 }
