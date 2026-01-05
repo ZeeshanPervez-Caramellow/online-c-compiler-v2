@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon src/index.js"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ZeeshanPervez-Caramellow/online-c-compiler-v2.git"
@@ -27,7 +28,10 @@
   "homepage": "https://github.com/ZeeshanPervez-Caramellow/online-c-compiler-v2#readme",
   "dependencies": {
     "@supabase/supabase-js": "^2.89.0",
-    "express": "^5.2.1"
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "helmet": "^8.1.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.11",

@@ -11,7 +11,7 @@ export const runCode = async (req, res) => {
 
   const sb = getSupabaseClient(token);
   const { code, language, input } = req.body;
-  language = language.toLowerCase();
+  language 
 
   // 1️⃣ Create execution record (RLS enforced)
   const { data: execution, error: insertError } = await sb
