@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Online Compiler</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background-color: #0f172a;
+      color: #e5e7eb;
+    }
+
+    header {
+      padding: 16px 24px;
+      background-color: #020617;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    main {
+      display: flex;
+      height: calc(100vh - 60px);
+    }
+
+    .editor-section {
+      flex: 1;
+      padding: 20px;
+      border-right: 1px solid #1e293b;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    select {
+      background: #020617;
+      color: #e5e7eb;
+      border: 1px solid #334155;
+      padding: 6px 10px;
+      border-radius: 4px;
+    }
+
+    button {
+      background-color: #2563eb;
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    button:hover {
+      background-color: #1d4ed8;
+    }
+
+    textarea {
+      width: 100%;
+      height: calc(100% - 50px);
+      background-color: #020617;
+      color: #e5e7eb;
+      border: 1px solid #334155;
+      border-radius: 6px;
+      padding: 12px;
+      font-family: monospace;
+      font-size: 14px;
+      resize: none;
+    }
+
+    .output-section {
+      width: 40%;
+      padding: 20px;
+      background-color: #020617;
+    }
+
+    .output-section h2 {
+      margin-top: 0;
+      font-size: 16px;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 8px;
+    }
+
+    pre {
+      background-color: black;
+      color: #22c55e;
+      padding: 12px;
+      height: calc(100% - 40px);
+      overflow-y: auto;
+      border-radius: 6px;
+      border: 1px solid #1e293b;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>🧠 Online Code Compiler</h1>
+  </header>
+
+  <main>
+    <!-- CODE EDITOR -->
+    <div class="editor-section">
+      <div class="controls">
+        <select id="language">
+          <option value="c">C</option>
+          <option value="cpp">C++</option>
+          <option value="java">Java</option>
+          <option value="python">Python</option>
+        </select>
+
+        <button onclick="runCode()">▶ Run</button>
+      </div>
+
+      <textarea id="code" placeholder="Write your code here...">
+#include <stdio.h>
+
+int main() {
+    printf("Hello, World!");
+    return 0;
+}
+      </textarea>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="output-section">
+      <h2>Output</h2>
+      <pre id="output">Waiting for execution...</pre>
+    </div>
+  </main>
+
+  <script>
+    async function runCode() {
+      const code = document.getElementById("code").value;
+      const language = document.getElementById("language").value;
+      const outputEl = document.getElementById("output");
+
+      outputEl.textContent = "Running...";
+
+      try {
+        const res = await fetch("/api/v1/compiler/run", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ language, code })
+        });
+
+        const data = await res.json();
+
+        outputEl.textContent = data.output || data.error || "No output";
+      } catch (err) {
+        outputEl.textContent = "Error connecting to server";
+      }
+    }
+  </script>
+</body>
+</html>

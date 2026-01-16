@@ -11,9 +11,7 @@ export const runCode = async (req, res) => {
 
   const sb = getSupabaseClient(token);
   const { code, language, input } = req.body;
-  language 
 
-  // 1️⃣ Create execution record (RLS enforced)
   const { data: execution, error: insertError } = await sb
     .from('executions')
     .insert({
@@ -30,10 +28,9 @@ export const runCode = async (req, res) => {
   }
 
   try {
-    // 2️⃣ Run code in sandbox
+
     const result = await compileAndRun({ code, language, input });
 
-    // 3️⃣ Update execution result
     await sb
       .from('executions')
       .update({
@@ -46,7 +43,7 @@ export const runCode = async (req, res) => {
     return res.status(200).json(result);
 
   } catch (err) {
-    // 4️⃣ Update execution failure
+    
     await sb
       .from('executions')
       .update({
