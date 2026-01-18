@@ -10,8 +10,14 @@ import { fileURLToPath } from 'url';
 
 const app = express();
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
+// /**
+//  * The absolute file path of the current module.
+//  * Derived from ES module metadata using import.meta.url and fileURLToPath.
+//  * Provides compatibility with CommonJS __filename in ES modules.
+//  * @type {string}
+//  */
+// const __filename = fileURLToPath(import.meta.url)
+// const __dirname = path.dirname(__filename)
 
 app.use(express.json());
 app.use(cookieParser());
