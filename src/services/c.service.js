@@ -1,2 +1,2 @@
-export const compileAndRunC = async ({ code, input }) => {
+export const compileAndRun = async ({ code, input }) => {
 }

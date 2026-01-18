@@ -1,8 +1,6 @@
 import { supabaseAdmin } from '../config/supabase.config.js';
 
 export const oauthLogin = async (req, res) => {
-  const { provider } = req.params;
-  
   const { data, error } = await supabaseAdmin.auth.signInWithOAuth({
     provider:'google',
     options: {
