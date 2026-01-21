@@ -108,9 +108,10 @@ export const loginUser = async (req, res) => {
       secure: process.env.NODE_ENV === "production"
     });
 
+    const access = data.session.access_token
     return res.status(200).json({ 
       message: "Login successful",
-      user: { id: data.user.id, email: data.user.email }
+      user: { id: data.user.id, email: data.user.email, access_token: access }
     });
   } catch (err) {
     console.error("Login error:", err);

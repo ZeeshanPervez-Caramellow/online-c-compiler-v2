@@ -1,5 +1,5 @@
 import { extractToken } from '../utils/extractToken.js';
-import { getSupabaseClient } from '../config/supabase.config.js';
+import { getSupabaseClient, supabaseAdmin } from '../config/supabase.config.js';
 import { compileAndRun } from '../services/c.service.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 
@@ -10,24 +10,34 @@ export const runCode = asyncHandler(async (req, res) => {
     return res.status(401).json({ error: 'Missing authorization token' });
   }
 
-  const sb = getSupabaseClient(token);   //why are we using getSupabaseClient here rather than supabaseAdmin ?
+  // Verify token using admin client
+  const { data: { user }, error: userError } = await supabaseAdmin.auth.getUser(token);
+
+  console.log("user", user);
+  console.log("token", token);
+  
+  if (userError || !user) {
+    console.log("userError", userError);
+    return res.status(401).json({ error: 'Invalid or expired token' });
+  }
+
+  const sb = getSupabaseClient(token);
   const { code, input } = req.body;
 
   const { data: execution, error: insertError } = await sb
     .from('executions')
     .insert({
+      user_id: user.id,
       code,
       input,
       status: 'RUNNING'
     })
     .select()
-    .single();//what does .single() do here? and what is in execution?
+    .single();
 
-  if (insertError) {     //why are we checking insertError here? or how are we accessing it here
+  if (insertError) {
     return res.status(400).json({ error: insertError.message });
   }
-
-
 
   try {
     const result = await compileAndRun({ code, input });
@@ -35,7 +45,7 @@ export const runCode = asyncHandler(async (req, res) => {
     await sb
       .from('executions')
       .update({
-        output: result.output,//what is result.output?
+        output: result.output,
         status: 'SUCCESS',
         updated_at: new Date()
       })
@@ -44,14 +54,14 @@ export const runCode = asyncHandler(async (req, res) => {
     return res.status(200).json(result);
   } catch (error) {
     await sb
-    .from('execuions')
-    .update({
-      output: result.output,
-      status: 'SUCCESS',
-      updated_at: new Date()
-    })
-    .eq('id', execution.id);
-    return res.status(500).json({ error: 'Compilation or execution failed' });
+      .from('executions')
+      .update({
+        output: error.message,
+        status: 'FAILED',
+        updated_at: new Date()
+      })
+      .eq('id', execution.id);
+    return res.status(500).json({ error: 'Compilation or execution failed', details: error.message });
   }
 
 });
